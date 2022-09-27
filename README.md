@@ -1,0 +1,1 @@
+# Atom - Shopify Starter Theme
