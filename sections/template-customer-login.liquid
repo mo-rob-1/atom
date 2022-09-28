@@ -1,79 +1,77 @@
-<div class="h-full flex items-center justify-center py-12 px-6 md:px-4 lg:px-8" x-data="{ loginForm: true, pwRecoverForm: false }">
-    <div class="max-w-md w-full space-y-8" x-show="loginForm">
-        <div>
-            <h1 class="text-center text-3xl font-bold mt-6">Sign in to your account</h1>
-        </div>
-        <div class="mt-8">
-            {% form 'customer_login' %}
-                {% if form.errors %}
-                    <div class="relative border border-red-400 bg-red-100 text-red-700 px-4 py-3" role="alert">
-                        <strong class="font-bold">Error!</strong>
-                        <p class="block sm:inline">{{ form.errors | default_errors }}</p>
-                    </div>
-                {% endif %}
+<div x-data="{ loginForm: true, pwRecoverForm: false }">
+  <div x-show="loginForm">
+      <div>
+          <h1>Sign in to your account</h1>
+      </div>
+      <div>
+          {% form 'customer_login' %}
+              {% if form.errors %}
+                  <div role="alert">
+                      <strong>Error!</strong>
+                      <p>{{ form.errors | default_errors }}</p>
+                  </div>
+              {% endif %}
 
-                <div class="my-2">
-                    <label class="sr-only" for="email_address">Email address</label>
-                    <input autocomplete="email" class="relative block w-full px-3 py-2 border" id="email_address" name="customer[email]" placeholder="Email address" type="email">
-                </div>
+              <div>
+                  <label class="sr-only" for="email_address">Email address</label>
+                  <input autocomplete="email" id="email_address" name="customer[email]" placeholder="Email address" type="email">
+              </div>
 
-                {% if form.password_needed %}
-                    <div class="my-2">
-                        <label class="sr-only" for="password">Password</label>
-                        <input autocomplete="current-password" class="relative block w-full px-3 py-2 border" id="password" name="customer[password]" placeholder="Password" type="password">
-                    </div>
-                {% endif %}
+              {% if form.password_needed %}
+                  <div class="my-2">
+                      <label class="sr-only" for="password">Password</label>
+                      <input autocomplete="current-password" id="password" name="customer[password]" placeholder="Password" type="password">
+                  </div>
+              {% endif %}
 
-                <div class="my-2 text-sm">
-                    <a class="underline text-gray-500 hover:text-gray-900" href="#" x-on:click="loginForm = false; pwRecoverForm = true">Forgot your password?</a>
-                </div>
+              <div class="my-2 text-sm">
+                  <a href="#" x-on:click="loginForm = false; pwRecoverForm = true">Forgot your password?</a>
+              </div>
 
-                <div>
-                    <button class="relative w-full py-2 px-4 text-sm font-medium text-white bg-gray-600 hover:bg-gray-900" type="submit">Sign in</button>
-                </div>
-            {% endform %}
-        </div>
+              <div>
+                  <button type="submit">Sign in</button>
+              </div>
+          {% endform %}
+      </div>
 
-        {% if shop.checkout.guest_login %}
-            <hr class="my-12">
+      {% if shop.checkout.guest_login %}
+          <div>
+              <h1>Continue as a guest</h1>
+          </div>
 
-            <div>
-                <h1 class="text-center text-3xl font-bold mt-6">Continue as a guest</h1>
-            </div>
+          {% form 'guest_login' %}
+              <div>
+                  <button type="submit">Continue</button>
+              </div>
+          {% endform %}
+      {% endif %}
+  </div>
+  <div x-show="pwRecoverForm">
+      <div>
+          <h1>Recover your password</h1>
+      </div>
+      <div>
+          {% form 'recover_customer_password' %}
+              {% if form.errors %}
+                  <div role="alert">
+                      <strong>Error!</strong>
+                      <p>{{ form.errors | default_errors }}</p>
+                  </div>
+              {% endif %}
 
-            {% form 'guest_login' %}
-                <div>
-                    <button class="relative w-full py-2 px-4 text-sm font-medium text-white bg-gray-600 hover:bg-gray-900" type="submit">Continue</button>
-                </div>
-            {% endform %}
-        {% endif %}
-    </div>
-    <div class="max-w-md w-full space-y-8" x-show="pwRecoverForm">
-        <div>
-            <h1 class="text-center text-3xl font-bold mt-6">Recover your password</h1>
-        </div>
-        <div class="mt-8">
-            {% form 'recover_customer_password' %}
-                {% if form.errors %}
-                    <div class="relative border border-red-400 bg-red-100 text-red-700 px-4 py-3" role="alert">
-                        <strong class="font-bold">Error!</strong>
-                        <p class="block sm:inline">{{ form.errors | default_errors }}</p>
-                    </div>
-                {% endif %}
+              <div>
+                  <label class="sr-only" for="email">Email address</label>
+                  <input autocomplete="email" id="email" name="email" placeholder="Email address" type="email">
+              </div>
 
-                <div class="my-2">
-                    <label class="sr-only" for="email">Email address</label>
-                    <input autocomplete="email" class="relative block w-full px-3 py-2 border" id="email" name="email" placeholder="Email address" type="email">
-                </div>
+              <div>
+                  <button type="submit">Recover password</button>
+              </div>
 
-                <div>
-                    <button class="relative w-full py-2 px-4 text-sm font-medium text-white bg-gray-600 hover:bg-gray-900" type="submit">Recover password</button>
-                </div>
-
-                <div class="mt-8 text-sm">
-                    <a class="underline text-gray-500 hover:text-gray-900" href="#" x-on:click="loginForm = true; pwRecoverForm = false">Back to login</a>
-                </div>
-            {% endform %}
-        </div>
-    </div>
+              <div>
+                  <a href="#" x-on:click="loginForm = true; pwRecoverForm = false">Back to login</a>
+              </div>
+          {% endform %}
+      </div>
+  </div>
 </div>
