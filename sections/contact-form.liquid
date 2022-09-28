@@ -1,0 +1,83 @@
+<div>
+  {% if section.settings.title != blank %}
+      <h1>{{ section.settings.title }}</h1>
+  {% endif %}
+
+  {% form 'contact' %}
+      {% if form.errors %}
+          <div>
+              <div>
+                  <div>
+                      {% include 'icon-error' %}
+                  </div>
+
+                  <div>
+                      Oh No! Your message failed to send
+                  </div>
+              </div>
+
+              <ul>
+                  {% for error in form.errors %}
+                      <li>
+                          <span>{{ form.errors.messages[error] }}</span>
+                      </li>
+                  {% endfor %}
+              </ul>
+          </div>
+      {% elsif form.posted_successfully? %}
+          <div>
+              <div>
+                  {% include 'icon-success' %}
+              </div>
+
+              <div>
+                  Your message has been sent!
+              </div>
+          </div>
+      {% endif %}
+
+      <div>
+          <div>
+              <div>
+                  <label for="contact_name">Name</label>
+                  <input id="contact_name" name="contact[name]" type="text">
+              </div>
+              <div>
+                  <label for="contact_email">Email address</label>
+                  <input id="contact_email" name="contact[email]" type="email">
+              </div>
+          </div>
+
+          <div>
+              <div>
+                  <label for="contact_message">Message</label>
+                  <textarea id="contact_message" name="contact[body]"></textarea>
+              </div>
+          </div>
+
+          <div>
+              <div>
+                  <input type="submit" value="Send message">
+              </div>
+          </div>
+      </div>
+  {% endform %}
+</div>
+
+{% schema %}
+{
+  "name": "Contact Form",
+  "settings": [
+      {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+      }
+  ],
+  "presets": [
+  {
+      "name": "Contact Form"
+  }
+  ]
+}
+{% endschema %}
