@@ -3,27 +3,11 @@
 <div>
     <div>
         <div>
-            <div>
-                {% for media in product.media %}
-                    <div>
-                        {% render 'product-media', media: media %}
-                    </div>
-                {% endfor %}
-            </div>
-
-            <div>
+            {% for media in product.media %}
                 <div>
-                    <div>
-                        {% for media in product.media %}
-                            <div>
-                                <div>
-                                    {% render 'product-media', media: media %}
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
+                    {% render 'product-media', media: media %}
                 </div>
-            </div>
+            {% endfor %}
         </div>
 
         <div>
