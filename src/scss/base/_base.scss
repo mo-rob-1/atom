@@ -1,0 +1,36 @@
+// -----------------------------------------------------------------------------
+// This file contains very basic styles.
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+html {
+  box-sizing: border-box;
+  font-size: 100%;
+  scroll-behavior: smooth;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: $color;
+  text-rendering: optimizeSpeed;
+  @include responsive(tablet) {
+    background-color: red;
+  }
+  @include responsive(laptop) {
+    background-color: blue;
+  }
+  @include responsive(laptop-lg) {
+    background-color: green;
+  }
+  @include responsive(desktop) {
+    background-color: yellow;
+  }
+}
