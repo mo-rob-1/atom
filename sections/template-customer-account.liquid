@@ -13,7 +13,7 @@
                             <div>
                                 <div>
                                     {% if order.line_items.first.image %}
-                                        <img class="w-full h-full object-center object-cover" src="{{ order.line_items.first.image | img_url: 'medium' }}" alt="{{ order.line_items.first.image.alt }}">
+                                        <img src="{{ order.line_items.first.image | img_url: 'medium' }}" alt="{{ order.line_items.first.image.alt }}">
 
                                     {% else %}
                                         {{ 'product-1' | placeholder_svg_tag: 'w-full h-full object-center object-cover' }}

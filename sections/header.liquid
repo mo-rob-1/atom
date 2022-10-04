@@ -4,7 +4,7 @@
           <!-- STORE NAME / STORE LOGO -->
           <div>
               <h1>
-                  {{ shop.name }}
+                {{ shop.name }}
               </h1>
           </div>
 
@@ -32,7 +32,7 @@
                                           <a href="{{childlink.url}}">
                                               <div>
                                                   <p>
-                                                      {{childlink.title}}
+                                                    {{childlink.title}}
                                                   </p>
                                               </div>
                                           </a>
@@ -48,6 +48,7 @@
                   {% endif %}
               {% endfor %}
           </nav>
+
           <!-- CART BUTTON / ACCOUNT LINKS IF ENABLED -->
           <div>
               <button type="button" x-on:click="searchBarOpen = true">
@@ -79,7 +80,7 @@
                       <div>
                           <div>
                               <h1>
-                                  {{ section.settings.mobile_menu_title }}
+                                {{ section.settings.mobile_menu_title }}
                               </h1>
                           </div>
 
@@ -106,7 +107,7 @@
                                               {% for childlink in link.links  %}
                                                   <a href="{{childlink.url}}">
                                                       <span>
-                                                          {{childlink.title}}
+                                                        {{childlink.title}}
                                                       </span>
                                                   </a>
                                               {% endfor %}
@@ -114,7 +115,7 @@
                                       </div>
                                   {% else %}
                                       <a href="{{ link.url }}">
-                                          {{ link.title }}
+                                        {{ link.title }}
                                       </a>
                                   {% endif %}
                               {% endfor %}
@@ -123,7 +124,6 @@
                   </div>
               </div>
           </div>
-
       </div>
   </div>
 

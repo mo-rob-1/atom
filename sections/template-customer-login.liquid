@@ -19,13 +19,13 @@
         </div>
 
         {% if form.password_needed %}
-          <div class="my-2">
+          <div>
             <label class="sr-only" for="password">Password</label>
             <input autocomplete="current-password" id="password" name="customer[password]" placeholder="Password" type="password">
           </div>
         {% endif %}
 
-        <div class="my-2 text-sm">
+        <div>
           <a href="#" x-on:click="loginForm = false; pwRecoverForm = true">Forgot your password?</a>
         </div>
 

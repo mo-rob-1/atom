@@ -1,7 +1,8 @@
 <!doctype html>
 <html>
   <head>
-    <title>{{ page_title }}
+    <title>
+      {{ page_title }}
     </title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -12,7 +13,6 @@
     <!-- Header hook for plugins -->
     {{ 'main.css' | asset_url | stylesheet_tag }}
     <script src="{{ 'main.js' | asset_url }}" defer="defer"></script>
-
     <style>
       [x-cloak] {
         display: none !important;
