@@ -1,197 +1,194 @@
-<article itemscope itemtype="http://schema.org/BlogPosting">
-    {% for block in section.blocks %}
-        {% case block.type %}
-            {% when 'article_title' %}
-                <div>
-                    <div>
-                        <a href="{{ blog.url }}">{{ blog.title }}</a>
-                        <h1 itemprop="headline">{{ article.title }}</h1>
-                    </div>
-                </div>
-            {% when 'article_author' %}
-                <div>
-                    <div itemscope itemtype="http://schema.org/Person">
-                        {% if section.settings.enable_author %}
-                            <small itemprop="author">{{ article.author }}</small>
-                        {% endif %}
-                    </div>
-                </div>
-            {% when 'article_published_date' %}
-                <div>
-                    <div>
-                        {% if section.settings.enable_published_date %}
-                            <time itemprop="datePublished dateCreated" datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: format: 'on_date' }}</time>
-                        {% endif %}
-                    </div>
-                </div>
-            {% when 'featured_image' %}
-                <div itemprop="image">
-                    {% if article.image != blank %}
-                        <img src="{{ article.image | img_url: 'large' }}" alt="{{ article.image.alt }}"/>
-                    {% else %}
-                        {% assign placeholder_image = 'lifestyle-1' %}
-                        {{ placeholder_image | placeholder_svg_tag: 'w-full h-80 md:h-96 object-cover object-center p-5' }}
-                    {% endif %}
-                </div>
-            {% when 'article_content' %}
-                <div>
-                    <div itemprop="articleBody">
-                        {{ article.content }}
-                    </div>
-                </div>
-            {% else %}
-        {% endcase %}
-    {% endfor %}
+<article>
+  {% for block in section.blocks %}
+    {% case block.type %}
+      {% when 'article_title' %}
+        <div>
+          <div>
+            <a href="{{ blog.url }}">{{ blog.title }}
+            </a>
+            <h1>
+              {{ article.title }}
+            </h1>
+          </div>
+        </div>
+      {% when 'article_author' %}
+        <div>
+          <div>
+            {% if section.settings.enable_author %}
+              <small>
+                {{ article.author }}
+              </small>
+            {% endif %}
+          </div>
+        </div>
+      {% when 'article_published_date' %}
+        <div>
+          <div>
+            {% if section.settings.enable_published_date %}
+              <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
+                {{ article.published_at | date: format: 'on_date' }}
+              </time>
+            {% endif %}
+          </div>
+        </div>
+      {% when 'featured_image' %}
+        <div>
+          {% if article.image != blank %}
+            <img src="{{ article.image | img_url: 'large' }}" alt="{{ article.image.alt }}"/>
+          {% else %}
+            {% assign placeholder_image = 'lifestyle-1' %}
+            {{ placeholder_image | placeholder_svg_tag: 'w-full h-80 md:h-96 object-cover object-center p-5' }}
+          {% endif %}
+        </div>
+      {% when 'article_content' %}
+        <div>
+          <div>
+            {{ article.content }}
+          </div>
+        </div>
+      {% else %}
+    {% endcase %}
+  {% endfor %}
 </article>
 
 {% if blog.comments_enabled? %}
-    <div id="comments">
-        {% if article.comments_count > 0 %}
+  <div id="comments">
+    {% if article.comments_count > 0 %}
+      <div>
+        <h1>See what people are saying...</h1>
+
+        {% paginate article.comments by 5 %}
+          {% for comment in article.comments %}
             <div>
-                <h1>See what people are saying...</h1>
+              <span>
+                {{ comment.author }}
+              </span>
+              <span>
+                {{ comment.created_at | date: format: 'default' }}
+              </span>
+              <p>
+                {{ comment.content }}
+              </p>
+            </div>
+          {% endfor %}
 
-                {% paginate article.comments by 5 %}
-                    {% for comment in article.comments %}
-                        <div>
-                            <span>{{ comment.author }}</span>
-                            <span>{{ comment.created_at | date: format: 'default' }}</span>
-                            <p>{{ comment.content }}</p>
-                        </div>
-                    {% endfor %}
+          <div>
+            {% render 'pagination', pagination: paginate %}
+          </div>
+        {% endpaginate %}
+      </div>
 
-                    <div>
-                        {% render 'pagination', pagination: paginate %}
-                    </div>
-                {% endpaginate %}
+    {% else %}
+      There are no comments for this article yet.
+    {% endif %}
+  </div>
+
+  <div id="comment_form">
+    {% form 'new_comment', article %}
+      <div>
+        {% if form.errors %}
+          <div>
+            <div>
+              <div>
+                {% include 'icon-error' %}
+              </div>
+
+              <div>
+                Oh No! Your comment could not be posted.
+              </div>
             </div>
 
-        {% else %}
-            There are no comments for this article yet.
+            <ul>
+              {% for error in form.errors %}
+                <li>
+                  <span>{{ form.errors.messages[error] }}
+                  </span>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% elsif form.posted_successfully? %}
+          <div>
+            <div>
+              {% include 'icon-success' %}
+            </div>
+
+            <div>
+              Your comment has been posted!
+            </div>
+          </div>
         {% endif %}
-    </div>
 
-    <div id="comment_form">
-        {% form 'new_comment', article %}
-            <div>
-                {% if form.errors %}
-                    <div>
-                        <div>
-                            <div>
-                                {% include 'icon-error' %}
-                            </div>
+        <div>
+          <div>
+            <label for="comment_author">Name</label>
+            <input id="comment_author" name="comment[author]" placeholder="Your Name" required type="text">
+          </div>
 
-                            <div>
-                                Oh No! Your comment could not be posted.
-                            </div>
-                        </div>
+          <div>
+            <label for="comment_email">Email</label>
+            <input id="comment_email" name="comment[email]" placeholder="Your Email Address" required type="email">
+          </div>
+        </div>
 
-                        <ul>
-                            {% for error in form.errors %}
-                                <li>
-                                    <span>{{ form.errors.messages[error] }}</span>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                {% elsif form.posted_successfully? %}
-                    <div>
-                        <div>
-                            {% include 'icon-success' %}
-                        </div>
+        <div>
+          <div>
+            <label for="comment_content">Comment</label>
+            <textarea id="comment_content" name="comment[body]" placeholder="Your Comment" required></textarea>
+          </div>
+        </div>
 
-                        <div>
-                            Your comment has been posted!
-                        </div>
-                    </div>
-                {% endif %}
-
-                <div>
-                    <div>
-                        <label for="comment_author">Name</label>
-                        <input id="comment_author" name="comment[author]" placeholder="Your Name" required type="text">
-                    </div>
-
-                    <div>
-                        <label for="comment_email">Email</label>
-                        <input id="comment_email" name="comment[email]" placeholder="Your Email Address" required type="email">
-                    </div>
-                </div>
-
-                <div>
-                    <div>
-                        <label for="comment_content">Comment</label>
-                        <textarea id="comment_content" name="comment[body]" placeholder="Your Comment" required></textarea>
-                    </div>
-                </div>
-
-                <div>
-                    <div>
-                        <input type="submit" value="Post comment">
-                    </div>
-                </div>
-            </div>
-        {% endform %}
-    </div>
+        <div>
+          <div>
+            <input type="submit" value="Post comment">
+          </div>
+        </div>
+      </div>
+    {% endform %}
+  </div>
 {% endif %}
 
-<!-- <script type="application/ld+json">
-
-
-[36mLine: 2[0m
-[31m(empty line)[0m
-[31m(empty line)[0m
-[31m[36mLine: 1[0m[0m
-[31m[31m
-[0m[0m
-[31m[31m
-[0m[0m
-[31m[31m
-[0m[0m
-[31m[31m[36mLine: 1[0m
-[0m[0m
-
-</script> -->
-
 {% schema %}
-
-{
+  {
     "name": "Template Article",
     "settings": [
-        {
-            "type": "checkbox",
-            "id": "enable_author",
-            "default": true,
-            "label": "Display Author Name"
-        }, {
-            "type": "checkbox",
-            "id": "enable_published_date",
-            "default": true,
-            "label": "Display Published Date"
-        }
+      {
+        "type": "checkbox",
+        "id": "enable_author",
+        "default": true,
+        "label": "Display Author Name"
+      }, {
+        "type": "checkbox",
+        "id": "enable_published_date",
+        "default": true,
+        "label": "Display Published Date"
+      }
     ],
     "blocks": [
-        {
-            "type": "article_title",
-            "name": "Title",
-            "limit": 1
-        }, {
-            "type": "article_author",
-            "name": "Author",
-            "limit": 1
-        }, {
-            "type": "article_published_date",
-            "name": "Published Date",
-            "limit": 1
-        }, {
-            "type": "featured_image",
-            "name": "Thumbnail",
-            "limit": 1
-        }, {
-            "type": "article_content",
-            "name": "Content",
-            "limit": 1
-        }
+      {
+        "type": "article_title",
+        "name": "Title",
+        "limit": 1
+      },
+      {
+        "type": "article_author",
+        "name": "Author",
+        "limit": 1
+      },
+      {
+        "type": "article_published_date",
+        "name": "Published Date",
+        "limit": 1
+      },
+      {
+        "type": "featured_image",
+        "name": "Thumbnail",
+        "limit": 1
+      }, {
+        "type": "article_content",
+        "name": "Content",
+        "limit": 1
+      }
     ]
-}
-
+  }
 {% endschema %}
